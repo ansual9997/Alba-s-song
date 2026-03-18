@@ -28,10 +28,13 @@
     z-index: -1;
   }
 
-  /* PORTADA CENTRAL */
+  /* ============================
+     DISEÑO PC (TU DISEÑO ACTUAL)
+     ============================ */
+
   .main {
     width: 100%;
-    height: calc(100% - 140px); /* más espacio para móvil */
+    height: calc(100% - 140px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,9 +50,8 @@
     box-shadow: 0 25px 60px rgba(0,0,0,0.7);
   }
 
-  /* BARRA INFERIOR */
   .bottom-bar {
-    height: 140px; /* más grande para móvil */
+    height: 140px;
     width: 100%;
     background: rgba(0,0,0,0.4);
     backdrop-filter: blur(20px);
@@ -61,11 +63,6 @@
     transition: opacity 0.4s ease;
   }
 
-  .bottom-bar.hidden {
-    opacity: 0;
-  }
-
-  /* IZQUIERDA: foto pequeña + títulos */
   .left {
     display: flex;
     align-items: center;
@@ -95,7 +92,6 @@
     color: #b3b3b3;
   }
 
-  /* CENTRO: solo 3 botones */
   .center {
     width: 50%;
     display: flex;
@@ -114,10 +110,6 @@
     border: none;
     cursor: pointer;
     padding: 0;
-  }
-
-  button svg {
-    display: block;
   }
 
   .ctrl-medium svg {
@@ -142,7 +134,6 @@
     fill: #000;
   }
 
-  /* BARRA DE PROGRESO */
   .progress-row {
     display: flex;
     align-items: center;
@@ -171,36 +162,72 @@
     margin-top: -5px;
   }
 
-  /* DERECHA VACÍA */
   .right {
     width: 25%;
   }
 
-  /* RESPONSIVE PARA MÓVIL */
+  /* ============================
+     MODO MÓVIL (SPOTIFY)
+     ============================ */
+
   @media (max-width: 600px) {
 
+    body {
+      overflow: auto;
+    }
+
     .main {
-      height: calc(100% - 180px);
-    }
-
-    .bottom-bar {
-      height: 180px;
+      height: auto;
+      padding-top: 40px;
       flex-direction: column;
-      justify-content: center;
-      gap: 10px;
     }
 
-    .left {
-      width: 100%;
-      justify-content: center;
+    .cover {
+      width: 90vw;
+      height: 90vw;
+      max-width: none;
+      max-height: none;
     }
 
-    .center {
-      width: 100%;
+    /* TÍTULO Y ARTISTA DEBAJO DE LA PORTADA */
+    .track-info {
+      margin-top: 20px;
+      text-align: center;
     }
 
+    .track-title {
+      font-size: 22px;
+    }
+
+    .track-artist {
+      font-size: 15px;
+    }
+
+    /* BOTONES CENTRADOS */
+    .controls {
+      margin-top: 20px;
+      gap: 40px;
+    }
+
+    .ctrl-play {
+      width: 70px;
+      height: 70px;
+    }
+
+    .ctrl-play svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    /* BARRA DE PROGRESO ABAJO */
     .progress-row {
-      width: 80%;
+      width: 85%;
+      margin: 25px auto;
+    }
+
+    /* OCULTAR LA BARRA INFERIOR DE PC */
+    .bottom-bar {
+      display: none !important;
     }
   }
 
@@ -271,10 +298,8 @@
   const bg = document.getElementById("bg");
   const cover = document.getElementById("cover");
   const miniCover = document.getElementById("miniCover");
-  const bottomBar = document.getElementById("bottomBar");
 
   let playing = false;
-  let hideTimeout;
 
   playBtn.addEventListener("click", () => {
     if (playing) {
@@ -298,7 +323,6 @@
 
   progress.addEventListener("input", () => {
     audio.currentTime = (progress.value / 100) * audio.duration;
-    showBar();
   });
 
   function format(sec) {
@@ -308,7 +332,6 @@
     return `${m}:${s.toString().padStart(2, "0")}`;
   }
 
-  /* FONDO DINÁMICO */
   function aplicarFondo() {
     bg.style.backgroundImage = `url('${cover.src}')`;
     miniCover.src = cover.src;
@@ -316,21 +339,6 @@
 
   if (cover.complete) aplicarFondo();
   cover.onload = aplicarFondo;
-  cover.src = cover.src.split("?")[0] + "?v=" + Date.now();
-
-  /* AUTO-OCULTAR BARRA */
-  function showBar() {
-    bottomBar.classList.remove("hidden");
-    clearTimeout(hideTimeout);
-    hideTimeout = setTimeout(() => {
-      bottomBar.classList.add("hidden");
-    }, 2000);
-  }
-
-  document.addEventListener("mousemove", showBar);
-  document.addEventListener("touchstart", showBar);
-
-  showBar();
 </script>
 
 </body>
