@@ -29,58 +29,36 @@
     z-index: -1;
   }
 
-  /* CONTENEDOR SUPERIOR (foto + texto) */
-  .top {
+  /* PORTADA CENTRADA */
+  .main {
+    flex: 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 15px;
     padding: 20px;
   }
 
-  .top img {
-    width: 90px;
-    height: 90px;
-    border-radius: 8px;
+  .cover {
+    width: 80vw;
+    max-width: 420px;
+    max-height: 55vh;
+    border-radius: 10px;
     object-fit: cover;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.7);
   }
 
   .track-title {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 600;
+    text-align: center;
   }
 
   .track-artist {
-    font-size: 14px;
+    font-size: 15px;
     color: #b3b3b3;
-  }
-
-  /* PROGRESO */
-  .progress-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 90%;
-    margin: 0 auto;
-    font-size: 12px;
-    color: #b3b3b3;
-  }
-
-  .progress {
-    flex: 1;
-    -webkit-appearance: none;
-    height: 6px;
-    background: #535353;
-    border-radius: 3px;
-  }
-
-  .progress::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 14px;
-    height: 14px;
-    background: #1db954;
-    border-radius: 50%;
-    cursor: pointer;
-    margin-top: -5px;
+    text-align: center;
   }
 
   /* CONTROLES */
@@ -89,7 +67,7 @@
     justify-content: center;
     gap: 40px;
     align-items: center;
-    margin-top: 15px;
+    margin-top: 10px;
   }
 
   .ctrl-medium svg {
@@ -121,7 +99,6 @@
 
   /* BARRA INFERIOR */
   .bottom-bar {
-    margin-top: auto;
     padding: 15px 0;
     background: rgba(0,0,0,0.45);
     backdrop-filter: blur(20px);
@@ -132,6 +109,34 @@
     opacity: 0;
   }
 
+  /* PROGRESO */
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 90%;
+    margin: 0 auto;
+    font-size: 12px;
+    color: #b3b3b3;
+  }
+
+  .progress {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 6px;
+    background: #535353;
+    border-radius: 3px;
+  }
+
+  .progress::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #1db954;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: -5px;
+  }
 </style>
 </head>
 
@@ -139,23 +144,11 @@
 
 <div class="bg" id="bg"></div>
 
-<!-- FOTO + TITULOS (como tu captura) -->
-<div class="top">
-  <img src="portada.jpg" id="miniCover">
-  <div>
-    <div class="track-title" id="title">Tu Canción</div>
-    <div class="track-artist" id="artist">Tu Nombre</div>
-  </div>
-</div>
+<div class="main">
+  <img src="portada.jpg" class="cover" id="cover">
 
-<!-- BARRA INFERIOR -->
-<div class="bottom-bar" id="bottomBar">
-
-  <div class="progress-row">
-    <span id="current">0:00</span>
-    <input type="range" id="progress" class="progress" min="0" max="100" value="0">
-    <span id="duration">0:00</span>
-  </div>
+  <div class="track-title" id="title">Tu Canción</div>
+  <div class="track-artist" id="artist">Tu Nombre</div>
 
   <div class="controls">
     <button class="ctrl-medium">
@@ -170,7 +163,14 @@
       <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 6l8.5 6L6 18z"/></svg>
     </button>
   </div>
+</div>
 
+<div class="bottom-bar" id="bottomBar">
+  <div class="progress-row">
+    <span id="current">0:00</span>
+    <input type="range" id="progress" class="progress" min="0" max="100" value="0">
+    <span id="duration">0:00</span>
+  </div>
 </div>
 
 <audio id="audio" src="tu-cancion.mp3" preload="metadata"></audio>
@@ -183,7 +183,7 @@
   const current = document.getElementById("current");
   const duration = document.getElementById("duration");
   const bg = document.getElementById("bg");
-  const miniCover = document.getElementById("miniCover");
+  const cover = document.getElementById("cover");
   const bottomBar = document.getElementById("bottomBar");
 
   let playing = false;
@@ -223,11 +223,11 @@
   }
 
   function aplicarFondo() {
-    bg.style.backgroundImage = `url('${miniCover.src}')`;
+    bg.style.backgroundImage = `url('${cover.src}')`;
   }
 
-  if (miniCover.complete) aplicarFondo();
-  miniCover.onload = aplicarFondo;
+  if (cover.complete) aplicarFondo();
+  cover.onload = aplicarFondo;
 
   /* AUTO-OCULTADO */
   function showBar() {
