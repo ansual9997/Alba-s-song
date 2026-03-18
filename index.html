@@ -29,88 +29,29 @@
     z-index: -1;
   }
 
-  /* PORTADA ARRIBA */
-  .main {
-    flex: 1;
+  /* CONTENEDOR SUPERIOR (foto + texto) */
+  .top {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
     gap: 15px;
     padding: 20px;
   }
 
-  .cover {
-    width: 80vw;
-    max-width: 420px;
-    max-height: 55vh;
-    border-radius: 10px;
+  .top img {
+    width: 90px;
+    height: 90px;
+    border-radius: 8px;
     object-fit: cover;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.7);
   }
 
   .track-title {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 600;
-    text-align: center;
   }
 
   .track-artist {
-    font-size: 15px;
+    font-size: 14px;
     color: #b3b3b3;
-    text-align: center;
-  }
-
-  /* BARRA INFERIOR */
-  .bottom-bar {
-    width: 100%;
-    padding: 15px;
-    background: rgba(0,0,0,0.45);
-    backdrop-filter: blur(20px);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    opacity: 1;
-    transition: opacity 0.4s ease;
-  }
-
-  .bottom-bar.hidden {
-    opacity: 0;
-  }
-
-  /* CONTROLES BONITOS */
-  .controls {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    align-items: center;
-  }
-
-  .ctrl-medium svg {
-    width: 32px;
-    height: 32px;
-    fill: #fff;
-    opacity: 0.8;
-  }
-
-  .ctrl-medium svg:hover {
-    opacity: 1;
-  }
-
-  .ctrl-play {
-    width: 75px;
-    height: 75px;
-    border-radius: 50%;
-    background: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .ctrl-play svg {
-    width: 36px;
-    height: 36px;
-    fill: #000;
   }
 
   /* PROGRESO */
@@ -141,6 +82,56 @@
     cursor: pointer;
     margin-top: -5px;
   }
+
+  /* CONTROLES */
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    align-items: center;
+    margin-top: 15px;
+  }
+
+  .ctrl-medium svg {
+    width: 32px;
+    height: 32px;
+    fill: #fff;
+    opacity: 0.8;
+  }
+
+  .ctrl-medium svg:hover {
+    opacity: 1;
+  }
+
+  .ctrl-play {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .ctrl-play svg {
+    width: 36px;
+    height: 36px;
+    fill: #000;
+  }
+
+  /* BARRA INFERIOR */
+  .bottom-bar {
+    margin-top: auto;
+    padding: 15px 0;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(20px);
+    transition: opacity 0.4s ease;
+  }
+
+  .bottom-bar.hidden {
+    opacity: 0;
+  }
+
 </style>
 </head>
 
@@ -148,14 +139,23 @@
 
 <div class="bg" id="bg"></div>
 
-<div class="main">
-  <img src="portada.jpg" class="cover" id="cover">
-
-  <div class="track-title" id="title">Tu Canción</div>
-  <div class="track-artist" id="artist">Tu Nombre</div>
+<!-- FOTO + TITULOS (como tu captura) -->
+<div class="top">
+  <img src="portada.jpg" id="miniCover">
+  <div>
+    <div class="track-title" id="title">Tu Canción</div>
+    <div class="track-artist" id="artist">Tu Nombre</div>
+  </div>
 </div>
 
+<!-- BARRA INFERIOR -->
 <div class="bottom-bar" id="bottomBar">
+
+  <div class="progress-row">
+    <span id="current">0:00</span>
+    <input type="range" id="progress" class="progress" min="0" max="100" value="0">
+    <span id="duration">0:00</span>
+  </div>
 
   <div class="controls">
     <button class="ctrl-medium">
@@ -171,12 +171,6 @@
     </button>
   </div>
 
-  <div class="progress-row">
-    <span id="current">0:00</span>
-    <input type="range" id="progress" class="progress" min="0" max="100" value="0">
-    <span id="duration">0:00</span>
-  </div>
-
 </div>
 
 <audio id="audio" src="tu-cancion.mp3" preload="metadata"></audio>
@@ -189,7 +183,7 @@
   const current = document.getElementById("current");
   const duration = document.getElementById("duration");
   const bg = document.getElementById("bg");
-  const cover = document.getElementById("cover");
+  const miniCover = document.getElementById("miniCover");
   const bottomBar = document.getElementById("bottomBar");
 
   let playing = false;
@@ -229,11 +223,11 @@
   }
 
   function aplicarFondo() {
-    bg.style.backgroundImage = `url('${cover.src}')`;
+    bg.style.backgroundImage = `url('${miniCover.src}')`;
   }
 
-  if (cover.complete) aplicarFondo();
-  cover.onload = aplicarFondo;
+  if (miniCover.complete) aplicarFondo();
+  miniCover.onload = aplicarFondo;
 
   /* AUTO-OCULTADO */
   function showBar() {
