@@ -14,6 +14,8 @@
     color: #fff;
     font-family: 'Montserrat', sans-serif;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
   }
 
@@ -27,87 +29,58 @@
     z-index: -1;
   }
 
+  /* CONTENEDOR PRINCIPAL */
   .main {
-    width: 100%;
-    height: calc(100% - 200px); /* espacio garantizado para la barra */
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
   }
 
   .cover {
-    width: 420px;
-    height: 420px;
-    max-width: 80vw;
-    max-height: 80vw;
-    border-radius: 8px;
+    width: 80vw;
+    max-width: 420px;
+    max-height: 60vh; /* CLAVE: nunca ocupa más del 60% de la pantalla */
+    border-radius: 10px;
     object-fit: cover;
     box-shadow: 0 25px 60px rgba(0,0,0,0.7);
   }
 
+  /* BARRA INFERIOR */
   .bottom-bar {
-    height: 200px; /* más grande para móvil */
     width: 100%;
+    padding: 15px;
     background: rgba(0,0,0,0.45);
     backdrop-filter: blur(20px);
     display: flex;
-    align-items: center;
-    padding: 0 20px;
-    gap: 20px;
-    opacity: 1 !important; /* nunca se oculta */
+    flex-direction: column;
+    gap: 12px;
   }
 
-  .left {
+  /* INFO */
+  .info {
     display: flex;
     align-items: center;
-    gap: 15px;
-    width: 25%;
+    gap: 12px;
   }
 
-  .left img {
-    width: 60px;
-    height: 60px;
-    border-radius: 4px;
+  .info img {
+    width: 55px;
+    height: 55px;
+    border-radius: 6px;
     object-fit: cover;
   }
 
-  .track-info {
-    display: flex;
-    flex-direction: column;
-  }
+  .track-title { font-size: 16px; font-weight: 600; }
+  .track-artist { font-size: 13px; color: #b3b3b3; }
 
-  .track-title {
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  .track-artist {
-    font-size: 13px;
-    color: #b3b3b3;
-  }
-
-  .center {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
+  /* CONTROLES */
   .controls {
     display: flex;
-    align-items: center;
+    justify-content: center;
     gap: 35px;
-  }
-
-  button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-  }
-
-  button svg {
-    display: block;
+    align-items: center;
   }
 
   .ctrl-medium svg {
@@ -117,8 +90,8 @@
   }
 
   .ctrl-play {
-    width: 70px;
-    height: 70px;
+    width: 65px;
+    height: 65px;
     border-radius: 50%;
     background: #fff;
     display: flex;
@@ -132,12 +105,13 @@
     fill: #000;
   }
 
+  /* PROGRESO */
   .progress-row {
     display: flex;
     align-items: center;
     gap: 10px;
-    width: 85%;
-    margin-top: 15px;
+    width: 90%;
+    margin: 0 auto;
     font-size: 12px;
     color: #b3b3b3;
   }
@@ -159,19 +133,6 @@
     cursor: pointer;
     margin-top: -5px;
   }
-
-  .right {
-    width: 25%;
-  }
-
-  @media (max-width: 600px) {
-    .main {
-      height: calc(100% - 240px);
-    }
-    .bottom-bar {
-      height: 240px;
-    }
-  }
 </style>
 </head>
 
@@ -183,41 +144,35 @@
   <img src="portada.jpg" class="cover" id="cover">
 </div>
 
-<div class="bottom-bar" id="bottomBar">
+<div class="bottom-bar">
 
-  <div class="left">
+  <div class="info">
     <img src="portada.jpg" id="miniCover">
-    <div class="track-info">
+    <div>
       <div class="track-title" id="title">Tu Canción</div>
       <div class="track-artist" id="artist">Tu Nombre</div>
     </div>
   </div>
 
-  <div class="center">
-    <div class="controls">
+  <div class="controls">
+    <button class="ctrl-medium">
+      <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+    </button>
 
-      <button class="ctrl-medium">
-        <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-      </button>
+    <button class="ctrl-play" id="play">
+      <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </button>
 
-      <button class="ctrl-play" id="play">
-        <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-      </button>
-
-      <button class="ctrl-medium">
-        <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 6l8.5 6L6 18z"/></svg>
-      </button>
-
-    </div>
-
-    <div class="progress-row">
-      <span id="current">0:00</span>
-      <input type="range" id="progress" class="progress" min="0" max="100" value="0">
-      <span id="duration">0:00</span>
-    </div>
+    <button class="ctrl-medium">
+      <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 6l8.5 6L6 18z"/></svg>
+    </button>
   </div>
 
-  <div class="right"></div>
+  <div class="progress-row">
+    <span id="current">0:00</span>
+    <input type="range" id="progress" class="progress" min="0" max="100" value="0">
+    <span id="duration">0:00</span>
+  </div>
 
 </div>
 
@@ -274,7 +229,6 @@
 
   if (cover.complete) aplicarFondo();
   cover.onload = aplicarFondo;
-  cover.src = cover.src.split("?")[0] + "?v=" + Date.now();
 </script>
 
 </body>
