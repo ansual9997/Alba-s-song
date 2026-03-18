@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Spotify Minimal Controls</title>
+<title>Reproductor</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
@@ -17,7 +17,6 @@
     overflow: hidden;
   }
 
-  /* Fondo dinámico */
   .bg {
     position: fixed;
     inset: 0;
@@ -28,10 +27,9 @@
     z-index: -1;
   }
 
-  /* PORTADA CENTRAL */
   .main {
     width: 100%;
-    height: calc(100% - 140px); /* Ajustado para móvil */
+    height: calc(100% - 200px); /* espacio garantizado para la barra */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,25 +45,18 @@
     box-shadow: 0 25px 60px rgba(0,0,0,0.7);
   }
 
-  /* BARRA INFERIOR */
   .bottom-bar {
-    height: 110px;
+    height: 200px; /* más grande para móvil */
     width: 100%;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0,0,0,0.45);
     backdrop-filter: blur(20px);
     display: flex;
     align-items: center;
     padding: 0 20px;
     gap: 20px;
-    opacity: 1;
-    transition: opacity 0.4s ease;
+    opacity: 1 !important; /* nunca se oculta */
   }
 
-  .bottom-bar.hidden {
-    opacity: 0;
-  }
-
-  /* IZQUIERDA: foto pequeña + títulos */
   .left {
     display: flex;
     align-items: center;
@@ -95,7 +86,6 @@
     color: #b3b3b3;
   }
 
-  /* CENTRO: solo 3 botones */
   .center {
     width: 50%;
     display: flex;
@@ -127,8 +117,8 @@
   }
 
   .ctrl-play {
-    width: 58px;
-    height: 58px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     background: #fff;
     display: flex;
@@ -137,18 +127,17 @@
   }
 
   .ctrl-play svg {
-    width: 26px;
-    height: 26px;
+    width: 30px;
+    height: 30px;
     fill: #000;
   }
 
-  /* BARRA DE PROGRESO */
   .progress-row {
     display: flex;
     align-items: center;
     gap: 10px;
-    width: 60%;
-    margin-top: 10px;
+    width: 85%;
+    margin-top: 15px;
     font-size: 12px;
     color: #b3b3b3;
   }
@@ -168,14 +157,21 @@
     background: #1db954;
     border-radius: 50%;
     cursor: pointer;
-    margin-top: -5px; /* centrado perfecto */
+    margin-top: -5px;
   }
 
-  /* DERECHA VACÍA */
   .right {
     width: 25%;
   }
 
+  @media (max-width: 600px) {
+    .main {
+      height: calc(100% - 240px);
+    }
+    .bottom-bar {
+      height: 240px;
+    }
+  }
 </style>
 </head>
 
@@ -189,7 +185,6 @@
 
 <div class="bottom-bar" id="bottomBar">
 
-  <!-- IZQUIERDA -->
   <div class="left">
     <img src="portada.jpg" id="miniCover">
     <div class="track-info">
@@ -198,21 +193,17 @@
     </div>
   </div>
 
-  <!-- CENTRO (solo 3 botones) -->
   <div class="center">
     <div class="controls">
 
-      <!-- Previous -->
       <button class="ctrl-medium">
         <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
       </button>
 
-      <!-- Play -->
       <button class="ctrl-play" id="play">
         <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
       </button>
 
-      <!-- Next -->
       <button class="ctrl-medium">
         <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 6l8.5 6L6 18z"/></svg>
       </button>
@@ -226,12 +217,11 @@
     </div>
   </div>
 
-  <!-- DERECHA VACÍA -->
   <div class="right"></div>
 
 </div>
 
-<audio id="audio" src="tu-cancion.mp3"></audio>
+<audio id="audio" src="tu-cancion.mp3" preload="metadata"></audio>
 
 <script>
   const audio = document.getElementById("audio");
@@ -243,10 +233,8 @@
   const bg = document.getElementById("bg");
   const cover = document.getElementById("cover");
   const miniCover = document.getElementById("miniCover");
-  const bottomBar = document.getElementById("bottomBar");
 
   let playing = false;
-  let hideTimeout;
 
   playBtn.addEventListener("click", () => {
     if (playing) {
@@ -270,7 +258,6 @@
 
   progress.addEventListener("input", () => {
     audio.currentTime = (progress.value / 100) * audio.duration;
-    showBar();
   });
 
   function format(sec) {
@@ -280,7 +267,6 @@
     return `${m}:${s.toString().padStart(2, "0")}`;
   }
 
-  /* FONDO DINÁMICO */
   function aplicarFondo() {
     bg.style.backgroundImage = `url('${cover.src}')`;
     miniCover.src = cover.src;
@@ -289,21 +275,6 @@
   if (cover.complete) aplicarFondo();
   cover.onload = aplicarFondo;
   cover.src = cover.src.split("?")[0] + "?v=" + Date.now();
-
-  /* AUTO-OCULTAR BARRA */
-  function showBar() {
-    bottomBar.classList.remove("hidden");
-    clearTimeout(hideTimeout);
-    hideTimeout = setTimeout(() => {
-      bottomBar.classList.add("hidden");
-    }, 2000);
-  }
-
-  document.addEventListener("mousemove", showBar);
-  document.addEventListener("touchstart", showBar);
-  document.addEventListener("touchmove", showBar); /* NECESARIO EN MÓVIL */
-
-  showBar();
 </script>
 
 </body>
