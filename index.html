@@ -48,6 +48,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
 .cover {
@@ -58,6 +59,11 @@ body {
   border-radius: 8px;
   object-fit: cover;
   box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+}
+
+/* Texto móvil oculto en PC */
+.track-info.mobile-only {
+  display: none;
 }
 
 .bottom-bar {
@@ -193,9 +199,12 @@ button {
     height: 85vw;
   }
 
-  .track-info {
-    margin-top: 15px;
+  /* Texto móvil visible solo en móvil */
+  .track-info.mobile-only {
+    display: flex;
+    flex-direction: column;
     text-align: center;
+    margin-top: 15px;
   }
 
   .track-title {
@@ -212,7 +221,7 @@ button {
     bottom: 0;
     left: 0;
     width: 100%;
-    background: rgba(0,0,0,0.4); /* IGUAL QUE PC */
+    background: rgba(0,0,0,0.4);
     backdrop-filter: blur(20px);
     padding: 20px 0 25px 0;
     display: flex;
@@ -255,9 +264,10 @@ button {
 <div class="main">
   <img src="portada.jpg" class="cover" id="cover">
 
-  <div class="track-info">
-    <div class="track-title" id="title">Tu Canción</div>
-    <div class="track-artist" id="artist">Tu Nombre</div>
+  <!-- TEXTO SOLO PARA MÓVIL -->
+  <div class="track-info mobile-only">
+    <div class="track-title" id="title"></div>
+    <div class="track-artist" id="artist"></div>
   </div>
 </div>
 
@@ -266,8 +276,8 @@ button {
   <div class="left">
     <img src="portada.jpg" id="miniCover">
     <div class="track-info">
-      <div class="track-title">Tu Canción</div>
-      <div class="track-artist">Tu Nombre</div>
+      <div class="track-title" id="titlePC"></div>
+      <div class="track-artist" id="artistPC"></div>
     </div>
   </div>
 
@@ -327,6 +337,12 @@ const bg = document.getElementById("bg");
 const cover = document.getElementById("cover");
 const miniCover = document.getElementById("miniCover");
 
+const titleMobile = document.getElementById("title");
+const artistMobile = document.getElementById("artist");
+
+const titlePC = document.getElementById("titlePC");
+const artistPC = document.getElementById("artistPC");
+
 let playing = false;
 
 function togglePlay() {
@@ -348,6 +364,12 @@ playBtnMobile.addEventListener("click", togglePlay);
 audio.addEventListener("loadedmetadata", () => {
   duration.textContent = format(audio.duration);
   durationMobile.textContent = format(audio.duration);
+
+  titleMobile.textContent = "Tu Canción";
+  artistMobile.textContent = "Tu Nombre";
+
+  titlePC.textContent = "Tu Canción";
+  artistPC.textContent = "Tu Nombre";
 });
 
 audio.addEventListener("timeupdate", () => {
