@@ -29,6 +29,7 @@
     z-index: -1;
   }
 
+  /* PORTADA RESPONSIVE */
   .main {
     flex: 1;
     display: flex;
@@ -40,12 +41,13 @@
   .cover {
     width: 80vw;
     max-width: 420px;
-    max-height: 60vh;
+    max-height: 60vh; /* CLAVE: nunca ocupa más del 60% de la pantalla */
     border-radius: 10px;
     object-fit: cover;
     box-shadow: 0 25px 60px rgba(0,0,0,0.7);
   }
 
+  /* BARRA INFERIOR */
   .bottom-bar {
     width: 100%;
     padding: 15px;
@@ -62,6 +64,7 @@
     opacity: 0;
   }
 
+  /* INFO */
   .info {
     display: flex;
     align-items: center;
@@ -78,6 +81,7 @@
   .track-title { font-size: 16px; font-weight: 600; }
   .track-artist { font-size: 13px; color: #b3b3b3; }
 
+  /* CONTROLES */
   .controls {
     display: flex;
     justify-content: center;
@@ -107,6 +111,7 @@
     fill: #000;
   }
 
+  /* PROGRESO */
   .progress-row {
     display: flex;
     align-items: center;
@@ -235,6 +240,7 @@
   if (cover.complete) aplicarFondo();
   cover.onload = aplicarFondo;
 
+  /* AUTO-OCULTADO RESPONSIVE */
   function showBar() {
     bottomBar.classList.remove("hidden");
     clearTimeout(hideTimeout);
