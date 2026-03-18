@@ -29,7 +29,6 @@
     z-index: -1;
   }
 
-  /* CONTENEDOR PRINCIPAL */
   .main {
     flex: 1;
     display: flex;
@@ -41,13 +40,12 @@
   .cover {
     width: 80vw;
     max-width: 420px;
-    max-height: 60vh; /* CLAVE: nunca ocupa más del 60% de la pantalla */
+    max-height: 60vh;
     border-radius: 10px;
     object-fit: cover;
     box-shadow: 0 25px 60px rgba(0,0,0,0.7);
   }
 
-  /* BARRA INFERIOR */
   .bottom-bar {
     width: 100%;
     padding: 15px;
@@ -56,9 +54,14 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    opacity: 1;
+    transition: opacity 0.4s ease;
   }
 
-  /* INFO */
+  .bottom-bar.hidden {
+    opacity: 0;
+  }
+
   .info {
     display: flex;
     align-items: center;
@@ -75,7 +78,6 @@
   .track-title { font-size: 16px; font-weight: 600; }
   .track-artist { font-size: 13px; color: #b3b3b3; }
 
-  /* CONTROLES */
   .controls {
     display: flex;
     justify-content: center;
@@ -105,7 +107,6 @@
     fill: #000;
   }
 
-  /* PROGRESO */
   .progress-row {
     display: flex;
     align-items: center;
@@ -144,7 +145,7 @@
   <img src="portada.jpg" class="cover" id="cover">
 </div>
 
-<div class="bottom-bar">
+<div class="bottom-bar" id="bottomBar">
 
   <div class="info">
     <img src="portada.jpg" id="miniCover">
@@ -188,8 +189,10 @@
   const bg = document.getElementById("bg");
   const cover = document.getElementById("cover");
   const miniCover = document.getElementById("miniCover");
+  const bottomBar = document.getElementById("bottomBar");
 
   let playing = false;
+  let hideTimeout;
 
   playBtn.addEventListener("click", () => {
     if (playing) {
@@ -200,6 +203,7 @@
       playIcon.innerHTML = '<path d="M6 19h4V5H6zm8-14h4v14h-4z"/>';
     }
     playing = !playing;
+    showBar();
   });
 
   audio.addEventListener("loadedmetadata", () => {
@@ -213,6 +217,7 @@
 
   progress.addEventListener("input", () => {
     audio.currentTime = (progress.value / 100) * audio.duration;
+    showBar();
   });
 
   function format(sec) {
@@ -229,6 +234,20 @@
 
   if (cover.complete) aplicarFondo();
   cover.onload = aplicarFondo;
+
+  function showBar() {
+    bottomBar.classList.remove("hidden");
+    clearTimeout(hideTimeout);
+    hideTimeout = setTimeout(() => {
+      bottomBar.classList.add("hidden");
+    }, 2000);
+  }
+
+  document.addEventListener("mousemove", showBar);
+  document.addEventListener("touchstart", showBar);
+  document.addEventListener("touchmove", showBar);
+
+  showBar();
 </script>
 
 </body>
