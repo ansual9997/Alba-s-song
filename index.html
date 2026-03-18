@@ -29,22 +29,36 @@
     z-index: -1;
   }
 
-  /* PORTADA RESPONSIVE */
+  /* PORTADA ARRIBA */
   .main {
     flex: 1;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    gap: 15px;
     padding: 20px;
   }
 
   .cover {
     width: 80vw;
     max-width: 420px;
-    max-height: 60vh; /* CLAVE: nunca ocupa más del 60% de la pantalla */
+    max-height: 55vh;
     border-radius: 10px;
     object-fit: cover;
     box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+  }
+
+  .track-title {
+    font-size: 22px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .track-artist {
+    font-size: 15px;
+    color: #b3b3b3;
+    text-align: center;
   }
 
   /* BARRA INFERIOR */
@@ -64,40 +78,28 @@
     opacity: 0;
   }
 
-  /* INFO */
-  .info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .info img {
-    width: 55px;
-    height: 55px;
-    border-radius: 6px;
-    object-fit: cover;
-  }
-
-  .track-title { font-size: 16px; font-weight: 600; }
-  .track-artist { font-size: 13px; color: #b3b3b3; }
-
-  /* CONTROLES */
+  /* CONTROLES BONITOS */
   .controls {
     display: flex;
     justify-content: center;
-    gap: 35px;
+    gap: 40px;
     align-items: center;
   }
 
   .ctrl-medium svg {
-    width: 26px;
-    height: 26px;
+    width: 32px;
+    height: 32px;
     fill: #fff;
+    opacity: 0.8;
+  }
+
+  .ctrl-medium svg:hover {
+    opacity: 1;
   }
 
   .ctrl-play {
-    width: 65px;
-    height: 65px;
+    width: 75px;
+    height: 75px;
     border-radius: 50%;
     background: #fff;
     display: flex;
@@ -106,8 +108,8 @@
   }
 
   .ctrl-play svg {
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
     fill: #000;
   }
 
@@ -148,17 +150,12 @@
 
 <div class="main">
   <img src="portada.jpg" class="cover" id="cover">
+
+  <div class="track-title" id="title">Tu Canción</div>
+  <div class="track-artist" id="artist">Tu Nombre</div>
 </div>
 
 <div class="bottom-bar" id="bottomBar">
-
-  <div class="info">
-    <img src="portada.jpg" id="miniCover">
-    <div>
-      <div class="track-title" id="title">Tu Canción</div>
-      <div class="track-artist" id="artist">Tu Nombre</div>
-    </div>
-  </div>
 
   <div class="controls">
     <button class="ctrl-medium">
@@ -193,7 +190,6 @@
   const duration = document.getElementById("duration");
   const bg = document.getElementById("bg");
   const cover = document.getElementById("cover");
-  const miniCover = document.getElementById("miniCover");
   const bottomBar = document.getElementById("bottomBar");
 
   let playing = false;
@@ -234,13 +230,12 @@
 
   function aplicarFondo() {
     bg.style.backgroundImage = `url('${cover.src}')`;
-    miniCover.src = cover.src;
   }
 
   if (cover.complete) aplicarFondo();
   cover.onload = aplicarFondo;
 
-  /* AUTO-OCULTADO RESPONSIVE */
+  /* AUTO-OCULTADO */
   function showBar() {
     bottomBar.classList.remove("hidden");
     clearTimeout(hideTimeout);
