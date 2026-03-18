@@ -171,23 +171,28 @@ button {
 @media (max-width: 600px) {
 
   body {
-    overflow-y: auto;
+    overflow: hidden; /* NO SCROLL */
+    height: 100vh;
   }
 
   .main {
-    height: auto;
+    height: calc(100vh - 160px); /* espacio exacto para la barra fija */
     padding-top: 40px;
+    display: flex;
     flex-direction: column;
-    padding-bottom: 200px; /* espacio para la barra fija */
+    justify-content: flex-start;
+    overflow: hidden;
   }
 
   .cover {
     width: 90vw;
     height: 90vw;
+    max-width: none;
+    max-height: none;
   }
 
   .track-info {
-    margin-top: 20px;
+    margin-top: 15px;
     text-align: center;
   }
 
@@ -199,7 +204,7 @@ button {
     font-size: 15px;
   }
 
-  /* BARRA FIJA INFERIOR (SPOTIFY) */
+  /* BARRA FIJA INFERIOR */
   .mobile-controls {
     position: fixed;
     bottom: 0;
@@ -207,7 +212,7 @@ button {
     width: 100%;
     background: rgba(0,0,0,0.65);
     backdrop-filter: blur(20px);
-    padding: 20px 0;
+    padding: 20px 0 25px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
