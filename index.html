@@ -7,230 +7,224 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #000;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Fondo dinámico */
+.bg {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(70px) brightness(0.45) saturate(1.4);
+  transform: scale(1.25);
+  z-index: -1;
+}
+
+/* ============================
+   DISEÑO PC
+   ============================ */
+
+.main {
+  width: 100%;
+  height: calc(100% - 140px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cover {
+  width: 80vw;
+  height: 80vw;
+  max-width: 420px;
+  max-height: 420px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+}
+
+.bottom-bar {
+  height: 140px;
+  width: 100%;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 20px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 25%;
+}
+
+.left img {
+  width: 60px;
+  height: 60px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.track-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.track-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.track-artist {
+  font-size: 13px;
+  color: #b3b3b3;
+}
+
+.center {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.ctrl-medium svg {
+  width: 26px;
+  height: 26px;
+  fill: #fff;
+}
+
+.ctrl-play {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ctrl-play svg {
+  width: 26px;
+  height: 26px;
+  fill: #000;
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 60%;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #b3b3b3;
+}
+
+.progress {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 6px;
+  background: #535353;
+  border-radius: 3px;
+}
+
+.progress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #1db954;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: -5px;
+}
+
+.right {
+  width: 25%;
+}
+
+/* ============================
+   MODO MÓVIL (SPOTIFY)
+   ============================ */
+
+@media (max-width: 600px) {
 
   body {
-    background: #000;
-    color: #fff;
-    font-family: 'Montserrat', sans-serif;
-    height: 100vh;
-    overflow: hidden;
+    overflow: auto;
   }
-
-  /* Fondo dinámico */
-  .bg {
-    position: fixed;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    filter: blur(70px) brightness(0.45) saturate(1.4);
-    transform: scale(1.25);
-    z-index: -1;
-  }
-
-  /* ============================
-     DISEÑO PC (TU DISEÑO ACTUAL)
-     ============================ */
 
   .main {
-    width: 100%;
-    height: calc(100% - 140px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: auto;
+    padding-top: 40px;
+    flex-direction: column;
   }
 
   .cover {
-    width: 80vw;
-    height: 80vw;
-    max-width: 420px;
-    max-height: 420px;
-    border-radius: 8px;
-    object-fit: cover;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.7);
-  }
-
-  .bottom-bar {
-    height: 140px;
-    width: 100%;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(20px);
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    gap: 20px;
-    opacity: 1;
-    transition: opacity 0.4s ease;
-  }
-
-  .left {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    width: 25%;
-  }
-
-  .left img {
-    width: 60px;
-    height: 60px;
-    border-radius: 4px;
-    object-fit: cover;
+    width: 90vw;
+    height: 90vw;
+    max-width: none;
+    max-height: none;
   }
 
   .track-info {
-    display: flex;
-    flex-direction: column;
+    margin-top: 20px;
+    text-align: center;
   }
 
   .track-title {
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 22px;
   }
 
   .track-artist {
-    font-size: 13px;
-    color: #b3b3b3;
-  }
-
-  .center {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    font-size: 15px;
   }
 
   .controls {
-    display: flex;
-    align-items: center;
-    gap: 35px;
-  }
-
-  button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-  }
-
-  .ctrl-medium svg {
-    width: 26px;
-    height: 26px;
-    fill: #fff;
+    margin-top: 20px;
+    gap: 40px;
   }
 
   .ctrl-play {
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
-    background: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 70px;
+    height: 70px;
   }
 
   .ctrl-play svg {
-    width: 26px;
-    height: 26px;
-    fill: #000;
+    width: 32px;
+    height: 32px;
   }
 
   .progress-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 60%;
-    margin-top: 10px;
-    font-size: 12px;
-    color: #b3b3b3;
+    width: 85%;
+    margin: 25px auto;
   }
 
-  .progress {
-    flex: 1;
-    -webkit-appearance: none;
-    height: 6px;
-    background: #535353;
-    border-radius: 3px;
+  /* OCULTAR BARRA INFERIOR EN MÓVIL */
+  .bottom-bar {
+    display: none !important;
   }
-
-  .progress::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 14px;
-    height: 14px;
-    background: #1db954;
-    border-radius: 50%;
-    cursor: pointer;
-    margin-top: -5px;
-  }
-
-  .right {
-    width: 25%;
-  }
-
-  /* ============================
-     MODO MÓVIL (SPOTIFY)
-     ============================ */
-
-  @media (max-width: 600px) {
-
-    body {
-      overflow: auto;
-    }
-
-    .main {
-      height: auto;
-      padding-top: 40px;
-      flex-direction: column;
-    }
-
-    .cover {
-      width: 90vw;
-      height: 90vw;
-      max-width: none;
-      max-height: none;
-    }
-
-    /* TÍTULO Y ARTISTA DEBAJO DE LA PORTADA */
-    .track-info {
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    .track-title {
-      font-size: 22px;
-    }
-
-    .track-artist {
-      font-size: 15px;
-    }
-
-    /* BOTONES CENTRADOS */
-    .controls {
-      margin-top: 20px;
-      gap: 40px;
-    }
-
-    .ctrl-play {
-      width: 70px;
-      height: 70px;
-    }
-
-    .ctrl-play svg {
-      width: 32px;
-      height: 32px;
-    }
-
-    /* BARRA DE PROGRESO ABAJO */
-    .progress-row {
-      width: 85%;
-      margin: 25px auto;
-    }
-
-    /* OCULTAR LA BARRA INFERIOR DE PC */
-    .bottom-bar {
-      display: none !important;
-    }
-  }
-
+}
 </style>
 </head>
 
@@ -243,8 +237,6 @@
 </div>
 
 <div class="bottom-bar" id="bottomBar">
-
-  <!-- IZQUIERDA -->
   <div class="left">
     <img src="portada.jpg" id="miniCover">
     <div class="track-info">
@@ -253,25 +245,19 @@
     </div>
   </div>
 
-  <!-- CENTRO -->
   <div class="center">
     <div class="controls">
-
-      <!-- Previous -->
       <button class="ctrl-medium">
         <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
       </button>
 
-      <!-- Play -->
       <button class="ctrl-play" id="play">
         <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
       </button>
 
-      <!-- Next -->
       <button class="ctrl-medium">
         <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 6l8.5 6L6 18z"/></svg>
       </button>
-
     </div>
 
     <div class="progress-row">
@@ -281,64 +267,62 @@
     </div>
   </div>
 
-  <!-- DERECHA VACÍA -->
   <div class="right"></div>
-
 </div>
 
 <audio id="audio" src="tu-cancion.mp3"></audio>
 
 <script>
-  const audio = document.getElementById("audio");
-  const playBtn = document.getElementById("play");
-  const playIcon = document.getElementById("playIcon");
-  const progress = document.getElementById("progress");
-  const current = document.getElementById("current");
-  const duration = document.getElementById("duration");
-  const bg = document.getElementById("bg");
-  const cover = document.getElementById("cover");
-  const miniCover = document.getElementById("miniCover");
+const audio = document.getElementById("audio");
+const playBtn = document.getElementById("play");
+const playIcon = document.getElementById("playIcon");
+const progress = document.getElementById("progress");
+const current = document.getElementById("current");
+const duration = document.getElementById("duration");
+const bg = document.getElementById("bg");
+const cover = document.getElementById("cover");
+const miniCover = document.getElementById("miniCover");
 
-  let playing = false;
+let playing = false;
 
-  playBtn.addEventListener("click", () => {
-    if (playing) {
-      audio.pause();
-      playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
-    } else {
-      audio.play();
-      playIcon.innerHTML = '<path d="M6 19h4V5H6zm8-14h4v14h-4z"/>';
-    }
-    playing = !playing;
-  });
-
-  audio.addEventListener("loadedmetadata", () => {
-    duration.textContent = format(audio.duration);
-  });
-
-  audio.addEventListener("timeupdate", () => {
-    progress.value = (audio.currentTime / audio.duration) * 100;
-    current.textContent = format(audio.currentTime);
-  });
-
-  progress.addEventListener("input", () => {
-    audio.currentTime = (progress.value / 100) * audio.duration;
-  });
-
-  function format(sec) {
-    if (isNaN(sec)) return "0:00";
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60);
-    return `${m}:${s.toString().padStart(2, "0")}`;
+playBtn.addEventListener("click", () => {
+  if (playing) {
+    audio.pause();
+    playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+  } else {
+    audio.play();
+    playIcon.innerHTML = '<path d="M6 19h4V5H6zm8-14h4v14h-4z"/>';
   }
+  playing = !playing;
+});
 
-  function aplicarFondo() {
-    bg.style.backgroundImage = `url('${cover.src}')`;
-    miniCover.src = cover.src;
-  }
+audio.addEventListener("loadedmetadata", () => {
+  duration.textContent = format(audio.duration);
+});
 
-  if (cover.complete) aplicarFondo();
-  cover.onload = aplicarFondo;
+audio.addEventListener("timeupdate", () => {
+  progress.value = (audio.currentTime / audio.duration) * 100;
+  current.textContent = format(audio.currentTime);
+});
+
+progress.addEventListener("input", () => {
+  audio.currentTime = (progress.value / 100) * audio.duration;
+});
+
+function format(sec) {
+  if (isNaN(sec)) return "0:00";
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
+function aplicarFondo() {
+  bg.style.backgroundImage = `url('${cover.src}')`;
+  miniCover.src = cover.src;
+}
+
+if (cover.complete) aplicarFondo();
+cover.onload = aplicarFondo;
 </script>
 
 </body>
