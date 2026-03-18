@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Reproductor</title>
+<title>Spotify Minimal Controls</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
@@ -14,11 +14,10 @@
     color: #fff;
     font-family: 'Montserrat', sans-serif;
     height: 100vh;
-    display: flex;
-    flex-direction: column;
     overflow: hidden;
   }
 
+  /* Fondo dinámico */
   .bg {
     position: fixed;
     inset: 0;
@@ -29,61 +28,107 @@
     z-index: -1;
   }
 
-  /* PORTADA CENTRADA */
+  /* PORTADA CENTRAL */
   .main {
-    flex: 1;
+    width: 100%;
+    height: calc(100% - 110px);
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    gap: 15px;
-    padding: 20px;
+    align-items: center;
   }
 
   .cover {
-    width: 80vw;
-    max-width: 420px;
-    max-height: 55vh;
-    border-radius: 10px;
+    width: 420px;
+    height: 420px;
+    max-width: 80vw;
+    max-height: 80vw;
+    border-radius: 8px;
     object-fit: cover;
     box-shadow: 0 25px 60px rgba(0,0,0,0.7);
   }
 
+  /* BARRA INFERIOR */
+  .bottom-bar {
+    height: 110px;
+    width: 100%;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 20px;
+    opacity: 1;
+    transition: opacity 0.4s ease;
+  }
+
+  .bottom-bar.hidden {
+    opacity: 0;
+  }
+
+  /* IZQUIERDA: foto pequeña + títulos */
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 25%;
+  }
+
+  .left img {
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+
+  .track-info {
+    display: flex;
+    flex-direction: column;
+  }
+
   .track-title {
-    font-size: 22px;
+    font-size: 16px;
     font-weight: 600;
-    text-align: center;
   }
 
   .track-artist {
-    font-size: 15px;
+    font-size: 13px;
     color: #b3b3b3;
-    text-align: center;
   }
 
-  /* CONTROLES */
+  /* CENTRO: solo 3 botones */
+  .center {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .controls {
     display: flex;
-    justify-content: center;
-    gap: 40px;
     align-items: center;
-    margin-top: 10px;
+    gap: 35px;
+  }
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  button svg {
+    display: block;
   }
 
   .ctrl-medium svg {
-    width: 32px;
-    height: 32px;
+    width: 26px;
+    height: 26px;
     fill: #fff;
-    opacity: 0.8;
-  }
-
-  .ctrl-medium svg:hover {
-    opacity: 1;
   }
 
   .ctrl-play {
-    width: 75px;
-    height: 75px;
+    width: 58px;
+    height: 58px;
     border-radius: 50%;
     background: #fff;
     display: flex;
@@ -92,30 +137,18 @@
   }
 
   .ctrl-play svg {
-    width: 36px;
-    height: 36px;
+    width: 26px;
+    height: 26px;
     fill: #000;
   }
 
-  /* BARRA INFERIOR */
-  .bottom-bar {
-    padding: 15px 0;
-    background: rgba(0,0,0,0.45);
-    backdrop-filter: blur(20px);
-    transition: opacity 0.4s ease;
-  }
-
-  .bottom-bar.hidden {
-    opacity: 0;
-  }
-
-  /* PROGRESO */
+  /* BARRA DE PROGRESO */
   .progress-row {
     display: flex;
     align-items: center;
     gap: 10px;
-    width: 90%;
-    margin: 0 auto;
+    width: 60%;
+    margin-top: 10px;
     font-size: 12px;
     color: #b3b3b3;
   }
@@ -135,8 +168,14 @@
     background: #1db954;
     border-radius: 50%;
     cursor: pointer;
-    margin-top: -5px;
+    margin-top: -5px; /* CENTRADO PERFECTO */
   }
+
+  /* DERECHA VACÍA */
+  .right {
+    width: 25%;
+  }
+
 </style>
 </head>
 
@@ -146,34 +185,53 @@
 
 <div class="main">
   <img src="portada.jpg" class="cover" id="cover">
-
-  <div class="track-title" id="title">Tu Canción</div>
-  <div class="track-artist" id="artist">Tu Nombre</div>
-
-  <div class="controls">
-    <button class="ctrl-medium">
-      <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-    </button>
-
-    <button class="ctrl-play" id="play">
-      <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-
-    <button class="ctrl-medium">
-      <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 6l8.5 6L6 18z"/></svg>
-    </button>
-  </div>
 </div>
 
 <div class="bottom-bar" id="bottomBar">
-  <div class="progress-row">
-    <span id="current">0:00</span>
-    <input type="range" id="progress" class="progress" min="0" max="100" value="0">
-    <span id="duration">0:00</span>
+
+  <!-- IZQUIERDA -->
+  <div class="left">
+    <img src="portada.jpg" id="miniCover">
+    <div class="track-info">
+      <div class="track-title" id="title">Tu Canción</div>
+      <div class="track-artist" id="artist">Tu Nombre</div>
+    </div>
   </div>
+
+  <!-- CENTRO (solo 3 botones) -->
+  <div class="center">
+    <div class="controls">
+
+      <!-- Previous -->
+      <button class="ctrl-medium">
+        <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+      </button>
+
+      <!-- Play -->
+      <button class="ctrl-play" id="play">
+        <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+
+      <!-- Next -->
+      <button class="ctrl-medium">
+        <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 6l8.5 6L6 18z"/></svg>
+      </button>
+
+    </div>
+
+    <div class="progress-row">
+      <span id="current">0:00</span>
+      <input type="range" id="progress" class="progress" min="0" max="100" value="0">
+      <span id="duration">0:00</span>
+    </div>
+  </div>
+
+  <!-- DERECHA VACÍA -->
+  <div class="right"></div>
+
 </div>
 
-<audio id="audio" src="tu-cancion.mp3" preload="metadata"></audio>
+<audio id="audio" src="tu-cancion.mp3"></audio>
 
 <script>
   const audio = document.getElementById("audio");
@@ -184,6 +242,7 @@
   const duration = document.getElementById("duration");
   const bg = document.getElementById("bg");
   const cover = document.getElementById("cover");
+  const miniCover = document.getElementById("miniCover");
   const bottomBar = document.getElementById("bottomBar");
 
   let playing = false;
@@ -198,7 +257,6 @@
       playIcon.innerHTML = '<path d="M6 19h4V5H6zm8-14h4v14h-4z"/>';
     }
     playing = !playing;
-    showBar();
   });
 
   audio.addEventListener("loadedmetadata", () => {
@@ -222,14 +280,17 @@
     return `${m}:${s.toString().padStart(2, "0")}`;
   }
 
+  /* FONDO DINÁMICO 100% ESTABLE */
   function aplicarFondo() {
     bg.style.backgroundImage = `url('${cover.src}')`;
+    miniCover.src = cover.src;
   }
 
   if (cover.complete) aplicarFondo();
   cover.onload = aplicarFondo;
+  cover.src = cover.src.split("?")[0] + "?v=" + Date.now();
 
-  /* AUTO-OCULTADO */
+  /* AUTO-OCULTAR TODA LA BARRA */
   function showBar() {
     bottomBar.classList.remove("hidden");
     clearTimeout(hideTimeout);
@@ -240,7 +301,6 @@
 
   document.addEventListener("mousemove", showBar);
   document.addEventListener("touchstart", showBar);
-  document.addEventListener("touchmove", showBar);
 
   showBar();
 </script>
