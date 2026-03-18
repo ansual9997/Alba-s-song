@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Spotify Minimal Controls</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #000;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Fondo dinámico */
+  .bg {
+    position: fixed;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(70px) brightness(0.45) saturate(1.4);
+    transform: scale(1.25);
+    z-index: -1;
+  }
+
+  /* PORTADA CENTRAL */
+  .main {
+    width: 100%;
+    height: calc(100% - 110px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover {
+    width: 420px;
+    height: 420px;
+    max-width: 80vw;
+    max-height: 80vw;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+  }
+
+  /* BARRA INFERIOR */
+  .bottom-bar {
+    height: 110px;
+    width: 100%;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 20px;
+    opacity: 1;
+    transition: opacity 0.4s ease;
+  }
+
+  .bottom-bar.hidden {
+    opacity: 0;
+  }
+
+  /* IZQUIERDA: foto pequeña + títulos */
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 25%;
+  }
+
+  .left img {
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+
+  .track-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .track-title {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .track-artist {
+    font-size: 13px;
+    color: #b3b3b3;
+  }
+
+  /* CENTRO: solo 3 botones */
+  .center {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+  }
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  button svg {
+    display: block;
+  }
+
+  .ctrl-medium svg {
+    width: 26px;
+    height: 26px;
+    fill: #fff;
+  }
+
+  .ctrl-play {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .ctrl-play svg {
+    width: 26px;
+    height: 26px;
+    fill: #000;
+  }
+
+  /* BARRA DE PROGRESO */
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 60%;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #b3b3b3;
+  }
+
+  .progress {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 6px;
+    background: #535353;
+    border-radius: 3px;
+  }
+
+  .progress::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #1db954;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: -5px; /* CENTRADO PERFECTO */
+  }
+
+  /* DERECHA VACÍA */
+  .right {
+    width: 25%;
+  }
+
+</style>
+</head>
+
+<body>
+
+<div class="bg" id="bg"></div>
+
+<div class="main">
+  <img src="portada.jpg" class="cover" id="cover">
+</div>
+
+<div class="bottom-bar" id="bottomBar">
+
+  <!-- IZQUIERDA -->
+  <div class="left">
+    <img src="portada.jpg" id="miniCover">
+    <div class="track-info">
+      <div class="track-title" id="title">Tu Canción</div>
+      <div class="track-artist" id="artist">Tu Nombre</div>
+    </div>
+  </div>
+
+  <!-- CENTRO (solo 3 botones) -->
+  <div class="center">
+    <div class="controls">
+
+      <!-- Previous -->
+      <button class="ctrl-medium">
+        <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+      </button>
+
+      <!-- Play -->
+      <button class="ctrl-play" id="play">
+        <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+
+      <!-- Next -->
+      <button class="ctrl-medium">
+        <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 6l8.5 6L6 18z"/></svg>
+      </button>
+
+    </div>
+
+    <div class="progress-row">
+      <span id="current">0:00</span>
+      <input type="range" id="progress" class="progress" min="0" max="100" value="0">
+      <span id="duration">0:00</span>
+    </div>
+  </div>
+
+  <!-- DERECHA VACÍA -->
+  <div class="right"></div>
+
+</div>
+
+<audio id="audio" src="tu-cancion.mp3"></audio>
+
+<script>
+  const audio = document.getElementById("audio");
+  const playBtn = document.getElementById("play");
+  const playIcon = document.getElementById("playIcon");
+  const progress = document.getElementById("progress");
+  const current = document.getElementById("current");
+  const duration = document.getElementById("duration");
+  const bg = document.getElementById("bg");
+  const cover = document.getElementById("cover");
+  const miniCover = document.getElementById("miniCover");
+  const bottomBar = document.getElementById("bottomBar");
+
+  let playing = false;
+  let hideTimeout;
+
+  playBtn.addEventListener("click", () => {
+    if (playing) {
+      audio.pause();
+      playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+    } else {
+      audio.play();
+      playIcon.innerHTML = '<path d="M6 19h4V5H6zm8-14h4v14h-4z"/>';
+    }
+    playing = !playing;
+  });
+
+  audio.addEventListener("loadedmetadata", () => {
+    duration.textContent = format(audio.duration);
+  });
+
+  audio.addEventListener("timeupdate", () => {
+    progress.value = (audio.currentTime / audio.duration) * 100;
+    current.textContent = format(audio.currentTime);
+  });
+
+  progress.addEventListener("input", () => {
+    audio.currentTime = (progress.value / 100) * audio.duration;
+    showBar();
+  });
+
+  function format(sec) {
+    if (isNaN(sec)) return "0:00";
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  }
+
+  /* FONDO DINÁMICO 100% ESTABLE */
+  function aplicarFondo() {
+    bg.style.backgroundImage = `url('${cover.src}')`;
+    miniCover.src = cover.src;
+  }
+
+  if (cover.complete) aplicarFondo();
+  cover.onload = aplicarFondo;
+  cover.src = cover.src.split("?")[0] + "?v=" + Date.now();
+
+  /* AUTO-OCULTAR TODA LA BARRA */
+  function showBar() {
+    bottomBar.classList.remove("hidden");
+    clearTimeout(hideTimeout);
+    hideTimeout = setTimeout(() => {
+      bottomBar.classList.add("hidden");
+    }, 2000);
+  }
+
+  document.addEventListener("mousemove", showBar);
+  document.addEventListener("touchstart", showBar);
+
+  showBar();
+</script>
+
+</body>
+</html>
