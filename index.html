@@ -12,8 +12,8 @@
 html, body {
   width: 100%;
   height: 100%;
-  overflow: hidden; /* BLOQUEA SCROLL GLOBAL */
-  position: fixed;  /* BLOQUEA SCROLL EN iOS */
+  overflow: hidden;
+  position: fixed;
   top: 0;
   left: 0;
 }
@@ -26,11 +26,11 @@ body {
 
 /* Fondo dinámico */
 .bg {
-  position: absolute; /* CAMBIO CLAVE: antes era fixed */
+  position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden; /* evita scroll por blur */
+  overflow: hidden;
   background-size: cover;
   background-position: center;
   filter: blur(70px) brightness(0.45) saturate(1.4);
@@ -206,13 +206,13 @@ button {
     font-size: 15px;
   }
 
-  /* BARRA FIJA INFERIOR */
+  /* BARRA FIJA INFERIOR TRANSPARENTE */
   .mobile-controls {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    background: rgba(0,0,0,0.65);
+    background: rgba(0,0,0,0.4); /* IGUAL QUE PC */
     backdrop-filter: blur(20px);
     padding: 20px 0 25px 0;
     display: flex;
