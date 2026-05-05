@@ -343,6 +343,29 @@ const artistPC = document.getElementById("artistPC");
 
 let playing = false;
 
+/* ============================
+   TÍTULO Y ARTISTA SIEMPRE CARGAN
+   ============================ */
+
+titleMobile.textContent = "مكتوب";
+artistMobile.textContent = "Alba 💘 Nico";
+
+titlePC.textContent = "مكتوب";
+artistPC.textContent = "Alba 💘 Nico";
+
+/* ============================
+   DURACIÓN DEL AUDIO
+   ============================ */
+
+audio.addEventListener("loadedmetadata", () => {
+  duration.textContent = format(audio.duration);
+  durationMobile.textContent = format(audio.duration);
+});
+
+/* ============================
+   CONTROLES DE AUDIO
+   ============================ */
+
 function togglePlay() {
   if (playing) {
     audio.pause();
@@ -358,17 +381,6 @@ function togglePlay() {
 
 playBtn.addEventListener("click", togglePlay);
 playBtnMobile.addEventListener("click", togglePlay);
-
-audio.addEventListener("loadedmetadata", () => {
-  duration.textContent = format(audio.duration);
-  durationMobile.textContent = format(audio.duration);
-
-  titleMobile.textContent = "مكتوب";
-  artistMobile.textContent = "Alba 💘 Nico";
-
-  titlePC.textContent = "مكتوب";
-  artistPC.textContent = "Alba 💘 Nico";
-});
 
 audio.addEventListener("timeupdate", () => {
   const value = (audio.currentTime / audio.duration) * 100;
