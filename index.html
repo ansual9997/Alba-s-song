@@ -2,11 +2,10 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Spotify Minimal Controls</title>
+<title>مكتوب</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<!-- Fuentes: Montserrat (ES) + Tajawal (AR) -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -256,49 +255,22 @@ button {
     display: none !important;
   }
 }
-
-/* ============================
-   RTL PARA ÁRABE
-   ============================ */
-
-.rtl {
-  direction: rtl;
-  text-align: right;
-}
-
-.rtl .track-info {
-  text-align: right;
-}
-
-.rtl .mobile-only {
-  text-align: center;
-}
 </style>
 </head>
 
 <body>
-
-<!-- Selector de idioma -->
-<div style="position:fixed; top:10px; right:10px; z-index:9999;">
-  <select id="langSelector">
-    <option value="es">ES</option>
-    <option value="ar">AR</option>
-  </select>
-</div>
 
 <div class="bg" id="bg"></div>
 
 <div class="main">
   <img src="portada.jpg" class="cover" id="cover">
 
-  <!-- TEXTO SOLO PARA MÓVIL -->
   <div class="track-info mobile-only">
     <div class="track-title" id="title"></div>
     <div class="track-artist" id="artist"></div>
   </div>
 </div>
 
-<!-- BARRA PC -->
 <div class="bottom-bar" id="bottomBar">
   <div class="left">
     <img src="portada.jpg" id="miniCover">
@@ -325,7 +297,6 @@ button {
   <div class="right"></div>
 </div>
 
-<!-- BARRA MÓVIL FIJA -->
 <div class="mobile-controls">
   <div class="controls">
     <button class="ctrl-medium"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
@@ -370,50 +341,7 @@ const artistMobile = document.getElementById("artist");
 const titlePC = document.getElementById("titlePC");
 const artistPC = document.getElementById("artistPC");
 
-const langSelector = document.getElementById("langSelector");
-
 let playing = false;
-
-/* ============================
-   SISTEMA DE TRADUCCIÓN
-   ============================ */
-
-const translations = {
-  es: {
-    title: "Tu Canción",
-    artist: "Tu Nombre"
-  },
-  ar: {
-    title: "أغنيتك",
-    artist: "اسمك"
-  }
-};
-
-function applyLanguage(lang) {
-  titleMobile.textContent = translations[lang].title;
-  artistMobile.textContent = translations[lang].artist;
-
-  titlePC.textContent = translations[lang].title;
-  artistPC.textContent = translations[lang].artist;
-
-  if (lang === "ar") {
-    document.body.style.fontFamily = "'Tajawal', sans-serif";
-    document.body.classList.add("rtl");
-  } else {
-    document.body.style.fontFamily = "'Montserrat', sans-serif";
-    document.body.classList.remove("rtl");
-  }
-}
-
-langSelector.addEventListener("change", () => {
-  applyLanguage(langSelector.value);
-});
-
-applyLanguage("es");
-
-/* ============================
-   CONTROLES DE AUDIO
-   ============================ */
 
 function togglePlay() {
   if (playing) {
@@ -434,6 +362,12 @@ playBtnMobile.addEventListener("click", togglePlay);
 audio.addEventListener("loadedmetadata", () => {
   duration.textContent = format(audio.duration);
   durationMobile.textContent = format(audio.duration);
+
+  titleMobile.textContent = "مكتوب";
+  artistMobile.textContent = "Alba Y Nico";
+
+  titlePC.textContent = "مكتوب";
+  artistPC.textContent = "Alba Y Nico";
 });
 
 audio.addEventListener("timeupdate", () => {
@@ -471,4 +405,3 @@ cover.onload = aplicarFondo;
 
 </body>
 </html>
-
